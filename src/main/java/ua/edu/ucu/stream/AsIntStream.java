@@ -1,6 +1,10 @@
 package ua.edu.ucu.stream;
 
-import ua.edu.ucu.function.*;
+import ua.edu.ucu.function.IntConsumer;
+import ua.edu.ucu.function.IntPredicate;
+import ua.edu.ucu.function.IntToIntStreamFunction;
+import ua.edu.ucu.function.IntUnaryOperator;
+import ua.edu.ucu.function.IntBinaryOperator;
 import ua.edu.ucu.iterator.FilterDecorator;
 import ua.edu.ucu.iterator.FlatMapDecorator;
 import ua.edu.ucu.iterator.MapDecorator;
@@ -9,6 +13,7 @@ import ua.edu.ucu.iterator.StreamIterator;
 public class AsIntStream implements IntStream {
 
     private StreamIterator streamIterator;
+    private static final int ARR_SIZE = 100;
 
     private AsIntStream(StreamIterator inputIterator) {
         streamIterator = inputIterator;
@@ -23,17 +28,17 @@ public class AsIntStream implements IntStream {
 
     // terminal methods
     @Override
-    public Double average() { return ((double)sum() / count()); }
+    public double average() { return ((double) sum() / count()); }
 
     @Override
-    public Integer max() {
+    public int max() {
         isEmpty();
         return reduce(streamIterator.next(),
                 (max, x) -> max = Math.max(x, max));
     }
 
     @Override
-    public Integer min() {
+    public int min() {
         isEmpty();
         return reduce(streamIterator.next(),
                 (min, x) -> min = Math.min(x, min)); }
@@ -42,7 +47,7 @@ public class AsIntStream implements IntStream {
     public long count() { return toArray().length; }
 
     @Override
-    public Integer sum() {
+    public int sum() {
         isEmpty();
         return reduce(0, (sum, x) -> sum += x);
     }
@@ -50,7 +55,7 @@ public class AsIntStream implements IntStream {
     @Override
     public void forEach(IntConsumer action) {
 
-        for (int number: toArray()){
+        for (int number: toArray()) {
             action.accept(number);
         }
 
@@ -59,17 +64,18 @@ public class AsIntStream implements IntStream {
     @Override
     public int reduce(int identity, IntBinaryOperator op) {
 
-        for (int number: toArray()){
-            identity = op.apply(identity, number);
+        int res = identity;
+        for (int number: toArray()) {
+            res = op.apply(res, number);
         }
-        return identity;
+        return res;
 
     }
 
     @Override
     public int[] toArray() {
 
-        int[] streamArray = new int[100];
+        int[] streamArray = new int[ARR_SIZE];
         int idx = 0;
 
         while (streamIterator.hasNext()) {
@@ -102,7 +108,7 @@ public class AsIntStream implements IntStream {
                 new FilterDecorator(streamIterator.iteratorCopy(), predicate));
     }
 
-    public void isEmpty(){
+    public void isEmpty() {
         if (!streamIterator.hasNext()) {
             throw new IllegalArgumentException();
         }

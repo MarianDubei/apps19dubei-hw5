@@ -1,6 +1,7 @@
 package ua.edu.ucu.iterator;
 
 import ua.edu.ucu.function.IntPredicate;
+import java.util.NoSuchElementException;
 
 public class FilterDecorator extends BaseDecorator {
 
@@ -19,8 +20,8 @@ public class FilterDecorator extends BaseDecorator {
         return currInt != null;
     }
 
-    private void updateCounts(){
-        while (streamIterator.hasNext()){
+    private void updateCounts() {
+        while (streamIterator.hasNext()) {
             currInt = streamIterator.next();
             if (predicate.test(currInt)) {
                 return;
@@ -31,14 +32,16 @@ public class FilterDecorator extends BaseDecorator {
 
     @Override
     public Integer next() {
-
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
         Integer prevInt = currInt;
         updateCounts();
         return prevInt;
 
     }
 
-    public StreamIterator iteratorCopy(){
+    public StreamIterator iteratorCopy() {
         return new FilterDecorator(super.iteratorCopy(), predicate);
     }
 

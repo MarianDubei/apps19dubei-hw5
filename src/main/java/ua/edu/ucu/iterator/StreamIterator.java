@@ -2,6 +2,7 @@ package ua.edu.ucu.iterator;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class StreamIterator implements Iterator<Integer> {
 
@@ -16,10 +17,17 @@ public class StreamIterator implements Iterator<Integer> {
     }
 
     @Override
-    public boolean hasNext() {return (elements.length >= idx + 1);}
+    public boolean hasNext() {return elements.length >= idx + 1;}
 
     @Override
-    public Integer next() { return elements[idx++]; }
+    public Integer next() {
+
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return elements[idx++];
+
+    }
 
     public StreamIterator iteratorCopy(){
 

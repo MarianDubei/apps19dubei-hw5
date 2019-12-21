@@ -2,8 +2,7 @@ package ua.edu.ucu.iterator;
 
 class BaseDecorator extends StreamIterator {
 
-    public StreamIterator streamIterator;
-
+    protected StreamIterator streamIterator;
 
     public BaseDecorator(StreamIterator inputStreamIterator) {
         streamIterator = inputStreamIterator;
@@ -19,7 +18,7 @@ class BaseDecorator extends StreamIterator {
         return streamIterator.next();
     }
 
-    public StreamIterator iteratorCopy(){
+    public StreamIterator iteratorCopy() {
         return new BaseDecorator(streamIterator.iteratorCopy());
     }
 

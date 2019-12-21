@@ -22,7 +22,7 @@ public class FlatMapDecorator extends BaseDecorator {
 
     @Override
     public Integer next() {
-        if (idx == 0){
+        if (idx == 0) {
             subStream = func.applyAsIntStream(streamIterator.next()).toArray();
         }
         int subStreamElement = subStream[idx++];
@@ -32,7 +32,7 @@ public class FlatMapDecorator extends BaseDecorator {
         return subStreamElement;
     }
 
-    public StreamIterator iteratorCopy(){
+    public StreamIterator iteratorCopy() {
         return new FlatMapDecorator(super.iteratorCopy(), func);
     }
 }

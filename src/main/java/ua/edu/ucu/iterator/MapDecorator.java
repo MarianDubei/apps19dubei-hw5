@@ -22,7 +22,7 @@ public class MapDecorator extends BaseDecorator {
         return mapper.apply(streamIterator.next());
     }
 
-    public StreamIterator iteratorCopy(){
+    public StreamIterator iteratorCopy() {
         return new MapDecorator(super.iteratorCopy(), mapper);
     }
 
