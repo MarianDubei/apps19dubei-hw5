@@ -28,17 +28,17 @@ public class AsIntStream implements IntStream {
 
     // terminal methods
     @Override
-    public double average() { return ((double) sum() / count()); }
+    public Double average() { return ((double) sum() / count()); }
 
     @Override
-    public int max() {
+    public Integer max() {
         isEmpty();
         return reduce(streamIterator.next(),
                 (max, x) -> max = Math.max(x, max));
     }
 
     @Override
-    public int min() {
+    public Integer min() {
         isEmpty();
         return reduce(streamIterator.next(),
                 (min, x) -> min = Math.min(x, min)); }
@@ -47,7 +47,7 @@ public class AsIntStream implements IntStream {
     public long count() { return toArray().length; }
 
     @Override
-    public int sum() {
+    public Integer sum() {
         isEmpty();
         return reduce(0, (sum, x) -> sum += x);
     }
